@@ -1,0 +1,8 @@
+file_format: "1"
+id: the_big_switch
+name: The Big Switch
+type: shield
+url: https://github.com/flehrad/Big-Switch-PCB
+requires: [pro_micro]
+features:
+  - keys
