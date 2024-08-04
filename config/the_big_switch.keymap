@@ -9,12 +9,62 @@
 #include <dt-bindings/zmk/bt.h>
 
 / {
+    behaviors {
+        sleep_or_quit: sleep_or_quit {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <1000>;
+            bindings = <&macos_sleep>, <&cmd_w_ent>;
+        };
+    };
+    behaviors {
+        toggle_or_backspace: toggle_or_backspace{
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <100>;
+            bindings = <&tog>, <&kp>;
+        };
+    };
+    macros {
+        cmd_w_ent: cmd_w_ent {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_press &kp LGUI>
+                , <&macro_tap &kp W>
+                , <&macro_release &kp LGUI>
+                , <&macro_wait_time 100>
+                , <&macro_tap &kp RET>
+                ;
+        };
+        macos_sleep: macos_sleep {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_press &kp LGUI &kp LALT>
+                , <&macro_tap &kp K_POWER>
+                , <&macro_release &kp LGUI &kp LALT>
+                ;
+        };
+    };
     keymap {
         compatible = "zmk,keymap";
 
         default_layer {
             bindings = <
-                &kp D
+               // press -> quit zoom call, hold -> macOS Sleep
+               &sleep_or_quit 0 1
+               // press -> back one slide, hold -> toggle layer
+               &toggle_or_backspace 1 BACKSPACE
+            >;
+        };
+        upper_layer {
+            bindings = <
+               // advance slide
+               &kp SPACE
+               &trans
             >;
         };
     };
