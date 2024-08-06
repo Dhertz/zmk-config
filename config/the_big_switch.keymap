@@ -17,14 +17,18 @@
             tapping-term-ms = <1000>;
             bindings = <&macos_sleep>, <&cmd_w_ent>;
         };
-    };
-    behaviors {
         toggle_or_backspace: toggle_or_backspace{
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "hold-preferred";
             tapping-term-ms = <250>;
             bindings = <&tog>, <&kp>;
+        };
+        td_mt: tap_dance_mod_tap {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&toggle_or_backspace 1 BACKSPACE>, <&bt BT_CLR>;
         };
     };
     macros {
@@ -57,7 +61,7 @@
                // press -> quit zoom call, hold -> macOS Sleep
                &sleep_or_quit 0 1
                // press -> back one slide, hold -> toggle layer
-               &toggle_or_backspace 1 BACKSPACE
+               &td_mt
             >;
         };
         upper_layer {
